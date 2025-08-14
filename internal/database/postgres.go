@@ -1,7 +1,9 @@
 package database
 
 import (
+	"context"
 	"diary-backend/internal/config"
+	"diary-backend/internal/models"
 	"fmt"
 	"log"
 
@@ -9,6 +11,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
+
+// CreateResource inserts a new resource into the database
+func CreateResource(ctx context.Context, resource *models.Resource) error {
+	db := GetDB()
+	if db == nil {
+		return fmt.Errorf("database not initialized")
+	}
+	return db.WithContext(ctx).Create(resource).Error
+}
 
 var DB *gorm.DB
 
